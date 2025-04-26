@@ -363,10 +363,10 @@ class Graph:
         depths = [0] * num_vertices
 
         # Calculate out-degrees (number of edges leaving each vertex)
-        for u in range(num_vertices):
-            for v in range(num_vertices):
-                if self.adjacency_matrix[u][v] == 1:
-                    out_degrees[u] += 1
+        for i in range(num_vertices):
+            for j in range(num_vertices):
+                if self.adjacency_matrix[i][j] == 1:
+                    out_degrees[i] += 1
 
         # Initialize queue with leaf nodes (nodes with out-degree 0)
         queue = []
@@ -377,16 +377,16 @@ class Graph:
 
         # Process nodes in reverse topological order
         while queue:
-            u = queue.pop(0)
+            i = queue.pop(0)
             # For all nodes that have an edge to u
-            for v in range(num_vertices):
-                if self.adjacency_matrix[v][u] == 1:
-                    out_degrees[v] -= 1
-                    if out_degrees[v] == 0:
-                        queue.append(v)
+            for j in range(num_vertices):
+                if self.adjacency_matrix[j][i] == 1:
+                    out_degrees[j] -= 1
+                    if out_degrees[j] == 0:
+                        queue.append(j)
                     # Depth is 1 + maximum depth of dependents
-                    if depths[v] < depths[u] + 1:
-                        depths[v] = depths[u] + 1
+                    if depths[j] < depths[i] + 1:
+                        depths[j] = depths[i] + 1
 
         # Assign the computed depths to vertices
         for i in range(num_vertices):
@@ -432,10 +432,10 @@ class Graph:
         """
         # Compute in-degrees
         in_degree = [0] * len(self.vertices)
-        for u in range(len(self.vertices)):
-            for v in range(len(self.vertices)):
-                if self.adjacency_matrix[u][v] == 1:
-                    in_degree[v] += 1
+        for a in range(len(self.vertices)):
+            for b in range(len(self.vertices)):
+                if self.adjacency_matrix[a][b] == 1:
+                    in_degree[b] += 1
 
         # Initialize queue with vertices of in_degree 0
         queue = []
@@ -451,14 +451,14 @@ class Graph:
             current_semester = []
             next_queue = []
             for _ in range(min(4, len(queue))):
-                u = queue.pop(0)
-                current_semester.append(str(self.vertices[u]))
+                a = queue.pop(0)
+                current_semester.append(str(self.vertices[a]))
                 # Decrease in_degree for neighbors
-                for v in range(len(self.vertices)):
-                    if self.adjacency_matrix[u][v] == 1:
-                        in_degree[v] -= 1
-                        if in_degree[v] == 0:
-                            next_queue.append(v)
+                for b in range(len(self.vertices)):
+                    if self.adjacency_matrix[a][b] == 1:
+                        in_degree[b] -= 1
+                        if in_degree[b] == 0:
+                            next_queue.append(b)
             registration_plan.append(current_semester)
             queue.extend(next_queue)
 
@@ -479,11 +479,11 @@ def main():
     num_edges = int(input())
     for _ in range(num_edges):
         prereq, course = input().strip().split()
-        from_idx = graph.get_index(prereq)
-        to_idx = graph.get_index(course)
+        fromm = graph.get_index(prereq)
+        to = graph.get_index(course)
 
         # Directly add the edge into the adjacency list
-        graph.adjacency_matrix[from_idx].append(to_idx)
+        graph.adjacency_matrix[fromm].append(to)
     ####################################################################################
     # DO NOT CHANGE ANYTHING BELOW THIS
     if graph.has_cycle():
